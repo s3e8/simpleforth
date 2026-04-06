@@ -1049,8 +1049,8 @@ s" unittest.f"  include
 \ : final-quit
 \     <stdin> input-stream !
 \     begin
-\ 	format-prompt input-stream @ prompt
-\ 	input-stream @ ?eof not
+\ 	    format-prompt input-stream @ prompt
+\ 	    input-stream @ ?eof not
 \     while
 \ 	    begin
 \ 		input-stream @ ?eol not
@@ -1062,33 +1062,20 @@ s" unittest.f"  include
 \     die
 \ ;
 
-: simpler-quit
+: simple-quit
     <stdin> input-stream !
     begin
-        input-stream @ ." forth> " prompt
+        s" forth> " input-stream @ prompt
         input-stream @ ?eof not
     while
-    begin
+        begin
             input-stream @ ?eol not
-    while
-    ' interpret catch drop
+        while
+            ' interpret catch drop
+        repeat
     repeat
-            cr
-    repeat
-        die
+    die
 ;
-
-: simple-quit
-   <stdin> input-stream !
-   begin
-       ." forth> "
-       interpret
-       input-stream @ ?eof not
-   while
-   repeat
-   die
-;
-
 
 
 ' simple-quit is quit
