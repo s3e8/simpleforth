@@ -53,7 +53,7 @@
 #define STATE_IMMEDIATE 0
 #define STATE_COMPILE   1
 /* the most important type, the cell. MUST be exactly of the pointer length! */
-typedef intptr_t cell;
+typedef long long cell; // todo: use long long or intptr or uintptr?
 /* preprocessor trick to test sizeof(long)==sizeof(void*)? */
 
 /* dictionary definition header. NEVER change the order of these fields, it's crucial! */
