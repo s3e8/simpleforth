@@ -224,7 +224,7 @@ static char* read_next_line(reader_state_t* state)
 
 static char* prompt_line(const char* prompt, reader_state_t* state)
 {
-    printf(prompt);
+    printf("%s", prompt);
     fflush(stdout);
     return read_next_line(state);
 }
