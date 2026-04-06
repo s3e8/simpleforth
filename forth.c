@@ -8,14 +8,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+// #include <unistd.h>
 // #include <sys/syscall.h>
 #include <ctype.h>
 #include <string.h>
 #include <limits.h>
 #include <math.h>
 #include <float.h>
-#include <sys/mman.h>
+// #include <sys/mman.h>
 
 // #include <dyncall.h>
 // #include <dynload.h>
@@ -53,7 +53,7 @@
 #define STATE_IMMEDIATE 0
 #define STATE_COMPILE   1
 /* the most important type, the cell. MUST be exactly of the pointer length! */
-typedef long cell;
+typedef intptr_t cell;
 /* preprocessor trick to test sizeof(long)==sizeof(void*)? */
 
 /* dictionary definition header. NEVER change the order of these fields, it's crucial! */
@@ -223,10 +223,12 @@ static char* read_next_line(reader_state_t* state)
 
 static char* prompt_line(const char* prompt, reader_state_t* state)
 {
-    return state->remaining_chars;
+    printf(prompt);
+    fflush(stdout);
+    return read_next_line(state);
 }
 
-static int read_key(reader_state_t *state) {
+static int read_key(reader_state_t *state) { 
     if(*state->remaining_chars == '\0') {
         if(!read_next_line(state)) return -1;
     }
