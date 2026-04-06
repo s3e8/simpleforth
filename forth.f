@@ -619,7 +619,6 @@ find-first-builtin
     dup 0= if
 	drop exit
     then
-    dup tell cr
     dup find
     ?dup if
 	nip
