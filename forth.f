@@ -650,14 +650,14 @@ find-first-builtin
 		nip
 	    then
 	else
-	    fnumber
+        dup fnumber \ todo: change to fnumber?
 	    if
 		state @ if
 		    ' flit ,
 		    f,
 		then
 	    else
-		." interpret: no such word" cr
+		." interpret: no such word -- " tell cr
 	    then
 	then
     then
@@ -1082,4 +1082,9 @@ s" lib/unittest.f"  include
 
 welcome
 hide welcome
+
+s" tty.f" include
+
+
+
 quit
