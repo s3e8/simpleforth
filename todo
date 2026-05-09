@@ -1,0 +1,4 @@
+- organize bytecodes?
+- add "reset" word to rebuild forth env
+- add forth_init function then forth_run, so you can init some other keywords outside the interpret function?
+- fix platform-specific stuff

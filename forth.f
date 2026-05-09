@@ -870,7 +870,7 @@ hide input-stack
 hide push-input-stack
 hide pop-input-stack
 
-s" peephole.f" include
+s" lib/peephole.f" include
 \ opt-word include
 
 variable compiling-lambda
@@ -1025,10 +1025,10 @@ defer breakpoint
 \     prompt-display-data s" [ds:%d ts:%d fs:%d %s] DEBUG> " format
 \ ;
 
-s" disasm.f"    include
-s" debugger.f"  include
-s" classes.f"   include
-s" unittest.f"  include
+s" lib/disasm.f"    include
+s" lib/debugger.f"  include
+s" lib/classes.f"   include
+s" lib/unittest.f"  include
 
 : bytes-used
       here @ here0 - ;

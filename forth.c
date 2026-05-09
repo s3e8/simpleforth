@@ -38,6 +38,9 @@
     #define FREE(x) free(x)
 #endif
 
+/* include libs */
+#include "tty.h"
+
 #define FORTH_VERSION 1
 /* ---------- limits ---------- */
 #define MAX_WORD_NAME_LEN 32
@@ -440,6 +443,7 @@ static void interpret(void **ip, cell *ds, void ***rs, reader_state_t *inputstat
   {
     #define BYTECODE(label, name, nargs, nfargs, flags, code) { name, &&l_##label, flags },
     #include "bytecodes.h"
+    #include "tty_bytecodes.h"
     #undef BYTECODE
     { NULL, NULL, 0 }
   };
@@ -525,28 +529,29 @@ static void interpret(void **ip, cell *ds, void ***rs, reader_state_t *inputstat
 
   NEXT();
 
-#if SAFE_INTERPRETER
- #define CHECKSTACK(name, amt) if((((cell)s0-(cell)ds)/sizeof(cell)) < amt)  \
-    {                                                                        \
-      printf("%s: stack underflow\n", (name));                               \
-      PUSHRS(ip);							\
-      ip = debugger_vector;						\
-      NEXT();                                                                \
-    }
- #define CHECKFSTACK(name, amt) if((((cell)f0-(cell)fs)/sizeof(float)) < amt)  \
-    {                                                                        \
-      printf("%s: float stack underflow\n", (name));                               \
-      PUSHRS(ip);							\
-      ip = debugger_vector;						\
-      NEXT();                                                                \
-    }
-#else
- #define CHECKSTACK(name, amt)
- #define CHECKFSTACK(name, amt)
-#endif
+  #if SAFE_INTERPRETER
+  #define CHECKSTACK(name, amt) if((((cell)s0-(cell)ds)/sizeof(cell)) < amt)  \
+      {                                                                        \
+        printf("%s: stack underflow\n", (name));                               \
+        PUSHRS(ip);							\
+        ip = debugger_vector;						\
+        NEXT();                                                                \
+      }
+  #define CHECKFSTACK(name, amt) if((((cell)f0-(cell)fs)/sizeof(float)) < amt)  \
+      {                                                                        \
+        printf("%s: float stack underflow\n", (name));                               \
+        PUSHRS(ip);							\
+        ip = debugger_vector;						\
+        NEXT();                                                                \
+      }
+  #else
+  #define CHECKSTACK(name, amt)
+  #define CHECKFSTACK(name, amt)
+  #endif
 
-#define BYTECODE(label, name, nargs, nfargs, flags, code) l_##label: CHECKSTACK(name, nargs) CHECKFSTACK(name, nfargs) code NEXT();
-#include "bytecodes.h"
+  #define BYTECODE(label, name, nargs, nfargs, flags, code) l_##label: CHECKSTACK(name, nargs) CHECKFSTACK(name, nfargs) code NEXT();
+  #include "bytecodes.h"
+  #include "tty_bytecodes.h"
 }
 
 // static char *word_completion_generator(const char *text, int state)

@@ -1,2 +1,2 @@
 forth: 
-	gcc -o forth forth.c -lm
+	gcc -o forth forth.c tty.c -lm
