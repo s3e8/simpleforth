@@ -10,6 +10,8 @@
 
 \ variable counter
 
+variable screen-cols
+variable screen-rows
 variable cursor-x 
 variable cursor-y 
 
@@ -40,27 +42,31 @@ variable cursor-y
 
 : update-screen-size ( -- )
     tty-get-window-size
-    ." cursor-y: " dup . raw-cr 
-    cursor-y !
-    ." cursor-x: " dup . raw-cr
-    cursor-x !
+    screen-cols !
+    screen-rows !
 ;
 
 
-
+: draw-lines ( -- )
+    screen-rows @
+    0
+    begin
+        1+
+        dup . raw-cr
+        2dup =
+    until
+    2drop
+;
 
 
 
 : tty-loop
     tty-enable-raw-mode
+    update-screen-size
     begin
         tty-clear-screen
-        update-screen-size
-        raw-cr
+        draw-lines
         read-key
-        raw-cr
-        dup .
-        dup emit
 
         KEY_ESC =
     until
